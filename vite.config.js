@@ -9,32 +9,32 @@ export default defineConfig({
     strictPort: false,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path
       },
       '/dashboard': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:8080',
         changeOrigin: true
       },
       '/overlay': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:8080',
         changeOrigin: true
       },
       '/blog': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:8080',
         changeOrigin: true
       },
       '/control-panel': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:8080',
         changeOrigin: true
       },
       '/ai-world': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:8080',
         changeOrigin: true
       },
       '/home': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:8080',
         changeOrigin: true
       }
     },
