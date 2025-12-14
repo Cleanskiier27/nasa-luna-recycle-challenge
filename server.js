@@ -134,7 +134,82 @@ app.post('/api/toggle/:feature', (req, res) => {
 
 // AI World route - Interactive AI environment
 app.get('/ai-world', (req, res) => {
-  res.send(`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AI World - NetworkBuster</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto;background:linear-gradient(135deg,#1a202c,#2d3748);min-height:100vh;color:#e2e8f0;padding:20px}html,body{height:100%}.container{max-width:1400px;margin:0 auto}.header{text-align:center;margin-bottom:40px}.header h1{font-size:3.5em;margin-bottom:10px;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.header p{font-size:1.2em;opacity:.8}.world-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:25px;margin-bottom:40px}.world-card{background:rgba(45,55,72,.6);border:1px solid rgba(102,126,234,.3);border-radius:12px;padding:25px;backdrop-filter:blur(10px);transition:all .3s ease}.world-card:hover{border-color:#667eea;background:rgba(45,55,72,.8);transform:translateY(-5px)}.card-icon{font-size:3em;margin-bottom:15px}.card-title{font-size:1.3em;font-weight:700;margin-bottom:10px;color:#667eea}.card-desc{font-size:.95em;opacity:.8;line-height:1.6;margin-bottom:15px}.card-button{width:100%;padding:12px;background:#667eea;border:none;border-radius:6px;color:#fff;font-weight:600;cursor:pointer;transition:all .2s}.card-button:hover{background:#5568d3;transform:translateY(-2px)}.ai-features{background:rgba(45,55,72,.6);border:1px solid rgba(102,126,234,.3);border-radius:12px;padding:25px;margin-bottom:40px;backdrop-filter:blur(10px)}.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-top:20px}.feature-item{background:rgba(102,126,234,.1);padding:15px;border-radius:8px;border-left:3px solid #667eea}.feature-name{font-weight:600;color:#667eea;margin-bottom:5px}.feature-desc{font-size:.9em;opacity:.7}.ai-simulator{background:rgba(45,55,72,.6);border:1px solid rgba(102,126,234,.3);border-radius:12px;padding:25px;margin-bottom:40px;backdrop-filter:blur(10px)}.sim-input{width:100%;padding:12px;margin-bottom:15px;background:rgba(0,0,0,.3);border:1px solid rgba(102,126,234,.3);border-radius:6px;color:#e2e8f0;font-size:1em}.sim-output{background:#1a202c;padding:15px;border-radius:6px;max-height:300px;overflow-y:auto;font-family:monospace;margin-top:15px}.stat-box{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin:20px 0}.stat-card{background:rgba(102,126,234,.1);padding:15px;border-radius:8px;text-align:center;border-left:3px solid #667eea}.stat-number{font-size:2em;font-weight:700;color:#667eea}.stat-label{font-size:.9em;opacity:.7;margin-top:5px}.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center}.modal.active{display:flex}.modal-content{background:#2d3748;border:1px solid #667eea;border-radius:12px;padding:30px;max-width:600px;width:90%}.modal-close{float:right;font-size:2em;cursor:pointer;color:#667eea}.close-btn{background:#667eea;padding:10px 20px;border:none;border-radius:6px;color:#fff;cursor:pointer;margin-top:20px}</style></head><body><div class="container"><div class="header"><h1>🌍 AI World</h1><p>Artificial Intelligence Learning & Simulation Environment</p></div><div class="world-grid"><div class="world-card"><div class="card-icon">🧠</div><div class="card-title">Machine Learning</div><div class="card-desc">Explore neural networks, deep learning models, and algorithm training</div><button class="card-button" onclick="loadModule('ml')">Explore ML</button></div><div class="world-card"><div class="card-icon">🤖</div><div class="card-title">AI Agents</div><div class="card-desc">Interactive autonomous agents with decision-making capabilities</div><button class="card-button" onclick="loadModule('agents')">Explore Agents</button></div><div class="world-card"><div class="card-icon">📊</div><div class="card-title">Data Science</div><div class="card-desc">Analyze datasets, visualize patterns, and extract insights</div><button class="card-button" onclick="loadModule('data')">Explore Data</button></div><div class="world-card"><div class="card-icon">🔮</div><div class="card-title">Predictions</div><div class="card-desc">Forecasting tools and predictive models for trend analysis</div><button class="card-button" onclick="loadModule('predict')">Explore Predictions</button></div><div class="world-card"><div class="card-icon">🗣️</div><div class="card-title">NLP</div><div class="card-desc">Natural Language Processing - text analysis and generation</div><button class="card-button" onclick="loadModule('nlp')">Explore NLP</button></div><div class="world-card"><div class="card-icon">👁️</div><div class="card-title">Computer Vision</div><div class="card-desc">Image recognition, object detection, and visual understanding</div><button class="card-button" onclick="loadModule('vision')">Explore Vision</button></div></div><div class="ai-features"><h2>🚀 AI World Features</h2><div class="feature-grid"><div class="feature-item"><div class="feature-name">🧬 Neural Networks</div><div class="feature-desc">Perceptrons, RNNs, CNNs, Transformers</div></div><div class="feature-item"><div class="feature-name">📈 Training</div><div class="feature-desc">Optimization, backpropagation, tuning</div></div><div class="feature-item"><div class="feature-name">🎯 Classification</div><div class="feature-desc">Supervised learning algorithms</div></div><div class="feature-item"><div class="feature-name">🔗 Clustering</div><div class="feature-desc">Unsupervised pattern discovery</div></div><div class="feature-item"><div class="feature-name">🎮 Reinforcement</div><div class="feature-desc">Agent learning through rewards</div></div><div class="feature-item"><div class="feature-name">🌐 Deep Learning</div><div class="feature-desc">Advanced neural architectures</div></div></div></div><div class="ai-simulator"><h2>💬 AI Chat Simulator</h2><input type="text" class="sim-input" id="aiInput" placeholder="Ask the AI something..."><button class="card-button" onclick="askAI()">Send Query</button><div class="sim-output" id="aiOutput">AI responses will appear here...</div></div><div class="stat-box"><div class="stat-card"><div class="stat-number" id="modelCount">47</div><div class="stat-label">AI Models</div></div><div class="stat-card"><div class="stat-number" id="datasets">1,200</div><div class="stat-label">Datasets</div></div><div class="stat-card"><div class="stat-number" id="accuracy">96.8%</div><div class="stat-label">Avg Accuracy</div></div><div class="stat-card"><div class="stat-number" id="uptime">99.9%</div><div class="stat-label">World Uptime</div></div></div></div><div id="modal" class="modal"><div class="modal-content"><span class="modal-close" onclick="closeModal()">&times;</span><h2 id="modalTitle">Module</h2><p id="modalBody">Loading...</p><button class="close-btn" onclick="closeModal()">Close</button></div></div><script>function loadModule(m){const modules={ml:'Machine Learning - Deep neural networks, training optimization, and advanced algorithms for pattern recognition.',agents:'AI Agents - Autonomous entities with decision-making capabilities, behavioral trees, and multi-agent systems.',data:'Data Science - Statistical analysis, data visualization, feature engineering, and exploratory data analysis.',predict:'Predictions - Forecasting models, time-series analysis, trend detection, and future outcome estimation.',nlp:'Natural Language - Text processing, sentiment analysis, translation, question answering systems.',vision:'Computer Vision - Image classification, object detection, semantic segmentation, and visual recognition.'};document.getElementById('modalTitle').textContent='🌍 '+m.toUpperCase();document.getElementById('modalBody').textContent=modules[m]||'Module not found';document.getElementById('modal').classList.add('active')}function closeModal(){document.getElementById('modal').classList.remove('active')}function askAI(){const input=document.getElementById('aiInput');const output=document.getElementById('aiOutput');const q=input.value.trim();if(!q)return;const responses=['Processing query...','🤖 AI is thinking...','Analyzing patterns...','Computing response...'];const r=responses[Math.floor(Math.random()*responses.length)];output.innerHTML+=`<div><strong>You:</strong> ${q}</div><div style="opacity:.7"><strong>AI:</strong> ${r}</div>`;input.value='';output.scrollTop=output.scrollHeight}window.addEventListener('keypress',(e)=>{if(e.key==='Enter'&&document.getElementById('aiInput')===document.activeElement)askAI()})</script></body></html>`);
+  const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI World - NetworkBuster</title>
+<style>
+* {margin:0;padding:0;box-sizing:border-box}
+body {font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto;background:linear-gradient(135deg,#1a202c,#2d3748);min-height:100vh;color:#e2e8f0;padding:20px}
+.container {max-width:1400px;margin:0 auto}
+.header {text-align:center;margin-bottom:40px}
+.header h1 {font-size:3em;margin-bottom:10px;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p {font-size:1.2em;opacity:.8}
+.world-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:30px}
+.world-card {background:rgba(45,55,72,.6);border:1px solid rgba(102,126,234,.3);border-radius:12px;padding:20px;transition:all .3s ease}
+.world-card:hover {border-color:#667eea;transform:translateY(-5px)}
+.card-icon {font-size:2.5em;margin-bottom:10px}
+.card-title {font-size:1.2em;font-weight:700;color:#667eea;margin-bottom:8px}
+.card-desc {font-size:.9em;opacity:.8;line-height:1.5;margin-bottom:12px}
+.card-button {width:100%;padding:10px;background:#667eea;border:none;border-radius:6px;color:#fff;font-weight:600;cursor:pointer}
+.card-button:hover {background:#5568d3}
+.ai-features {background:rgba(45,55,72,.6);border:1px solid rgba(102,126,234,.3);border-radius:12px;padding:20px;margin-bottom:30px}
+.feature-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:15px}
+.feature-item {background:rgba(102,126,234,.1);padding:12px;border-radius:6px;border-left:3px solid #667eea}
+.feature-name {font-weight:600;color:#667eea;font-size:.9em}
+.ai-simulator {background:rgba(45,55,72,.6);border:1px solid rgba(102,126,234,.3);border-radius:12px;padding:20px;margin-bottom:30px}
+.sim-input {width:100%;padding:10px;margin-bottom:10px;background:rgba(0,0,0,.3);border:1px solid rgba(102,126,234,.3);border-radius:6px;color:#e2e8f0}
+.sim-output {background:#1a202c;padding:12px;border-radius:6px;max-height:250px;overflow-y:auto;font-family:monospace;font-size:.9em}
+.stat-box {display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:20px 0}
+.stat-card {background:rgba(102,126,234,.1);padding:12px;border-radius:6px;text-align:center;border-left:3px solid #667eea}
+.stat-number {font-size:1.5em;font-weight:700;color:#667eea}
+.stat-label {font-size:.85em;opacity:.7;margin-top:5px}
+.modal {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center}
+.modal.active {display:flex}
+.modal-content {background:#2d3748;border:1px solid #667eea;border-radius:12px;padding:25px;max-width:500px;width:90%}
+.modal-close {float:right;font-size:1.5em;cursor:pointer;color:#667eea}
+.close-btn {background:#667eea;padding:10px 15px;border:none;border-radius:6px;color:#fff;cursor:pointer;margin-top:15px;width:100%}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>🌍 AI World</h1><p>Artificial Intelligence Learning & Simulation Environment</p></div>
+<div class="world-grid">
+<div class="world-card"><div class="card-icon">🧠</div><div class="card-title">Machine Learning</div><div class="card-desc">Explore neural networks and deep learning</div><button class="card-button" onclick="loadModule('ml')">Explore</button></div>
+<div class="world-card"><div class="card-icon">🤖</div><div class="card-title">AI Agents</div><div class="card-desc">Autonomous decision-making systems</div><button class="card-button" onclick="loadModule('agents')">Explore</button></div>
+<div class="world-card"><div class="card-icon">📊</div><div class="card-title">Data Science</div><div class="card-desc">Analysis and visualization</div><button class="card-button" onclick="loadModule('data')">Explore</button></div>
+<div class="world-card"><div class="card-icon">🔮</div><div class="card-title">Predictions</div><div class="card-desc">Forecasting and trends</div><button class="card-button" onclick="loadModule('predict')">Explore</button></div>
+<div class="world-card"><div class="card-icon">🗣️</div><div class="card-title">NLP</div><div class="card-desc">Natural Language Processing</div><button class="card-button" onclick="loadModule('nlp')">Explore</button></div>
+<div class="world-card"><div class="card-icon">👁️</div><div class="card-title">Computer Vision</div><div class="card-desc">Image recognition and detection</div><button class="card-button" onclick="loadModule('vision')">Explore</button></div>
+</div>
+<div class="ai-features"><h2>🚀 AI Features</h2><div class="feature-grid">
+<div class="feature-item"><div class="feature-name">🧬 Neural Networks</div></div>
+<div class="feature-item"><div class="feature-name">📈 Training</div></div>
+<div class="feature-item"><div class="feature-name">🎯 Classification</div></div>
+<div class="feature-item"><div class="feature-name">🔗 Clustering</div></div>
+<div class="feature-item"><div class="feature-name">🎮 Reinforcement</div></div>
+<div class="feature-item"><div class="feature-name">🌐 Deep Learning</div></div>
+</div></div>
+<div class="ai-simulator"><h2>💬 AI Chat</h2><input type="text" class="sim-input" id="aiInput" placeholder="Ask the AI..."><button class="card-button" onclick="askAI()">Send</button><div class="sim-output" id="aiOutput">Chat responses appear here...</div></div>
+<div class="stat-box">
+<div class="stat-card"><div class="stat-number">47</div><div class="stat-label">AI Models</div></div>
+<div class="stat-card"><div class="stat-number">1.2K</div><div class="stat-label">Datasets</div></div>
+<div class="stat-card"><div class="stat-number">96.8%</div><div class="stat-label">Accuracy</div></div>
+<div class="stat-card"><div class="stat-number">99.9%</div><div class="stat-label">Uptime</div></div>
+</div>
+</div>
+<div id="modal" class="modal"><div class="modal-content"><span class="modal-close" onclick="closeModal()">&times;</span><h2 id="modalTitle">Module</h2><p id="modalBody">Loading...</p><button class="close-btn" onclick="closeModal()">Close</button></div></div>
+<script>
+function loadModule(m){const m2={ml:'Machine Learning - Deep neural networks and algorithms',agents:'AI Agents - Autonomous decision-making',data:'Data Science - Statistical analysis',predict:'Predictions - Forecasting models',nlp:'NLP - Text processing',vision:'Vision - Image recognition'};document.getElementById('modalTitle').textContent='🌍 '+m.toUpperCase();document.getElementById('modalBody').textContent=m2[m]||'Module loaded';document.getElementById('modal').classList.add('active')}
+function closeModal(){document.getElementById('modal').classList.remove('active')}
+function askAI(){const input=document.getElementById('aiInput');const output=document.getElementById('aiOutput');const q=input.value.trim();if(!q)return;output.innerHTML+='<div><b>You:</b> '+q+'</div><div style="opacity:.7"><b>AI:</b> Processing...</div>';input.value='';output.scrollTop=output.scrollHeight}
+window.addEventListener('keypress',(e)=>{if(e.key==='Enter'&&document.getElementById('aiInput')===document.activeElement)askAI()})
+</script>
+</body>
+</html>`;
+  res.send(htmlContent);
   addLog('AI World loaded');
 });
 
