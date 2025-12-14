@@ -5,6 +5,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: '0.0.0.0',
     port: 5173,
     strictPort: false,
     proxy: {
@@ -40,7 +41,7 @@ export default defineConfig({
     },
     middlewareMode: false,
     hmr: {
-      host: 'localhost',
+      host: '192.168.1.180',
       port: 5173
     }
   },
