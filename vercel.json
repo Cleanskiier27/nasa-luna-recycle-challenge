@@ -4,7 +4,7 @@
   "devCommand": "npm start",
   "functions": {
     "server.js": {
-      "runtime": "nodejs24.x",
+      "runtime": "nodejs24.x@latest",
       "maxDuration": 30
     }
   },
