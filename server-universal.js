@@ -186,7 +186,8 @@ staticPaths.forEach(({ prefix, dir }) => {
 
 // SPA fallbacks (safe) - use regex instead of wildcard
 const dashboardPath = path.join(__dirname, 'dashboard/dist/index.html');
-const overlayPath = path.join(__dirname, 'challengerepo/real-time-overlay/dist/index.html');
+const overlayPath = path.join(__dirname, 'web-app/overlay.html');
+const challengeOverlayPath = path.join(__dirname, 'challengerepo/real-time-overlay/dist/index.html');
 
 app.get(/^\/dashboard(.*)$/, (req, res) => {
   res.set('Cache-Control', 'public, max-age=3600');
@@ -197,13 +198,30 @@ app.get(/^\/dashboard(.*)$/, (req, res) => {
   });
 });
 
+// AI World / Overlay page
 app.get(/^\/overlay(.*)$/, (req, res) => {
   res.set('Cache-Control', 'public, max-age=3600');
   res.sendFile(overlayPath, (err) => {
     if (err) {
-      res.status(404).json({ error: 'Overlay not found' });
+      // Fallback to challenge repo version
+      res.sendFile(challengeOverlayPath, (err2) => {
+        if (err2) {
+          res.status(404).json({ error: 'Overlay not found' });
+        }
+      });
     }
   });
+});
+
+// Auth UI redirect
+app.get('/auth', (req, res) => res.redirect('/auth/'));
+app.get('/auth/', (req, res) => {
+  res.redirect('http://localhost:3003');
+});
+
+// Audio Lab redirect
+app.get('/audio-lab', (req, res) => {
+  res.redirect('http://localhost:3002/audio-lab');
 });
 
 // 404 handler
