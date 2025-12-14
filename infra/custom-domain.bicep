@@ -2,11 +2,8 @@ metadata description = 'Configure custom domains and SSL certificates for Networ
 
 param location string = 'eastus'
 param projectName string = 'networkbuster'
-param primaryDomain string = 'networkbuster.net'
-param apiDomain string = 'api.networkbuster.net'
 param containerAppName string = '${projectName}-server'
 param containerAppEnvName string = '${projectName}-env'
-param resourceGroupName string
 
 // Reference existing Key Vault or create new one
 param keyVaultName string = '${projectName}-kv'
@@ -14,8 +11,6 @@ param keyVaultName string = '${projectName}-kv'
 // Certificate parameters
 @secure()
 param certificatePfxBase64 string = ''
-@secure()
-param certificatePassword string = ''
 
 // Create Key Vault for certificate storage
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
