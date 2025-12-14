@@ -1,7 +1,7 @@
 import './Overlay.css'
 import { useState, useEffect } from 'react'
 
-function Overlay() {
+function Overlay({ videoSize = 'medium' }) {
   const [particles, setParticles] = useState([])
 
   useEffect(() => {
