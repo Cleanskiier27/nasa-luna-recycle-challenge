@@ -1,116 +1,47 @@
-/* Net Bot Chat Widget Styles */
-.netbot-chat-widget {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 320px;
-  background: #fff;
-  border: 1px solid #0066cc;
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-  display: flex;
-  flex-direction: column;
-  z-index: 1000;
-}
-.netbot-chat-header {
-  background: #0066cc;
-  color: #fff;
-  padding: 12px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  font-weight: bold;
-  text-align: center;
-}
-.netbot-chat-body {
-  padding: 16px;
-  min-height: 60px;
-  max-height: 180px;
-  overflow-y: auto;
-  background: #f9f9f9;
-}
-.netbot-message {
-  margin-bottom: 10px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-}
-.netbot-message-bot {
-  background: #e6f0fa;
-  color: #0066cc;
-  align-self: flex-start;
-}
-.netbot-chat-input {
-  display: flex;
-  border-top: 1px solid #eee;
-}
-.netbot-chat-input input {
-  flex: 1;
-  border: none;
-  padding: 10px;
-  border-bottom-left-radius: 10px;
-  outline: none;
-}
-.netbot-chat-input button {
-  background: #0066cc;
-  color: #fff;
-  border: none;
-  padding: 10px 18px;
-  border-bottom-right-radius: 10px;
-  cursor: not-allowed;
-}
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8fafd;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 32px 24px;
 }
 
 h1 {
-  color: #0066cc;
+  color: #222;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 18px;
+  font-size: 2.2rem;
 }
 
-.specs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 20px;
-}
-
-.spec-card {
-  background: #f5f5f5;
-  border: 1px solid #ddd;
+.admin-panel {
+  margin-top: 32px;
+  background: #f5f7fa;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
-.spec-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.spec-card h3 {
-  color: #0066cc;
+.admin-panel h2 {
   margin-top: 0;
-  border-bottom: 2px solid #0066cc;
-  padding-bottom: 10px;
+  color: #0066cc;
+  font-size: 1.3rem;
 }
 
-.spec-card pre {
-  background: #fff;
-  padding: 10px;
-  border-radius: 4px;
-  overflow-x: auto;
-  font-size: 12px;
-  line-height: 1.4;
+.admin-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.error {
-  background: #fee;
-  color: #c33;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
+.admin-panel li {
+  margin-bottom: 10px;
+  font-size: 1.05rem;
 }
