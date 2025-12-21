@@ -4,7 +4,20 @@
 # - --apply: apply recommended changes
 # - --no-confirm: don't prompt
 # - --persist: also write to /etc/sysctl.d/99-networkbuster.conf
-
+#
+# Examples:
+#   # Dry run to show recommended changes
+#   ./network-boost.sh
+#   # Apply interactively (prompts for confirmation)
+#   sudo ./network-boost.sh --apply
+#   # Apply without prompts and persist across reboots
+#   sudo ./network-boost.sh --apply --no-confirm --persist
+#   # Non-interactive (CI or automation)
+#   sudo ./network-boost.sh --apply --no-confirm
+#
+# Notes:
+# - After applying a restore script is generated: network-boost-restore.sh
+# - Logs are appended to network-boost.log
 set -euo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG="$DIR/network-boost.log"

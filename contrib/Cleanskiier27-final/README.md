@@ -14,3 +14,7 @@ How to apply in upstream repo:
 3. Run tests on representative Windows and Linux machines (see docs/NETWORK-BOOST.md).
 
 This contribution was prepared by: GitHub Copilot (contributor).
+
+Note: This contribution intentionally does **not** include a LICENSE file — upstream maintainers should add or apply an appropriate license when accepting this contribution.
+
+Initial release: v0.1.0 (publish automation script included as `publish.sh`).
