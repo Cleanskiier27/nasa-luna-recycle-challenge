@@ -9,8 +9,8 @@ Usage:
 param(
   [string]$Name = "test-$(Get-Date -Format 'yyyyMMdd-HHmmss')",
   [int]$Port = 3002,
-  [int]$AutoAcceptSeconds = 1,
-  [switch]$StartProcess = $true,
+  [double]$AutoAcceptSeconds = 0.001,
+  [bool]$StartProcess = $true,
   [string]$InstancesDir = 'S:\NetworkBuster_Production\instances'
 )
 
