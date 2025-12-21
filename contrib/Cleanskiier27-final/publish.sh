@@ -12,7 +12,8 @@ if [ ! -f "scripts/network-boost.sh" ]; then
   exit 1
 fi
 
-# Remove LICENSE if present to avoid replicating upstream project's license
+# Remove LICENSE 
+if present to avoid replicating upstream project's license
 if [ -f LICENSE ]; then
   echo "Found LICENSE; moving to LICENSE.skip to avoid replicating in the new repo."
   mv LICENSE LICENSE.skip
