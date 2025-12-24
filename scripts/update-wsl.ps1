@@ -19,8 +19,51 @@
 [CmdletBinding()]
 param(
   [string]$Distro,
-  [switch]$DryRun
+  [switch]$DryRun,
+  [string]$WorkingDir,
+  [switch]$RegisterScheduledTask,
+  [string]$ScheduleTime = '03:00'  # HH:mm (24h) local time
 )
+
+# If a working directory is provided, switch to it (useful when running from a mounted drive like G:\kodak)
+if ($WorkingDir) {
+  if (-not (Test-Path -Path $WorkingDir)) {
+    Write-Error "Working directory '$WorkingDir' does not exist."
+    exit 1
+  }
+  Write-Host "Switching to working directory: $WorkingDir" -ForegroundColor Cyan
+  Set-Location -Path $WorkingDir
+}
+
+function Register-UpdateScheduledTask {
+  param(
+    [string]$TaskName = "WSL-Update",
+    [string]$RunTime = '03:00'
+  )
+
+  if (-not (Get-Command Register-ScheduledTask -ErrorAction SilentlyContinue)) {
+    Write-Error "Scheduled Task cmdlets are not available on this system. Run on Windows 10/11 with required privileges."
+    exit 1
+  }
+
+  $scriptPath = (Get-Location).Path + '\\scripts\\update-wsl.ps1'
+  if (-not (Test-Path $scriptPath)) {
+    Write-Error "Cannot locate script at $scriptPath to register as scheduled task."
+    exit 1
+  }
+
+  $timeParts = $RunTime -split ':'
+  $trigger = New-ScheduledTaskTrigger -Daily -At (Get-Date -Hour [int]$timeParts[0] -Minute [int]$timeParts[1] -Second 0)
+  $action = New-ScheduledTaskAction -Execute 'PowerShell.exe' -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`""
+
+  # Register or update
+  if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
+    Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
+  }
+
+  Register-ScheduledTask -TaskName $TaskName -Trigger $trigger -Action $action -RunLevel Highest -Force
+  Write-Host "Scheduled task '$TaskName' created to run daily at $RunTime (script: $scriptPath)" -ForegroundColor Green
+}
 
 function Run-UpdateInDistro {
   param($name)
@@ -43,6 +86,12 @@ function Run-UpdateInDistro {
 if (-not (Get-Command wsl -ErrorAction SilentlyContinue)) {
   Write-Error "WSL is not available on this system. Install WSL or run updates inside your distro directly."
   exit 1
+}
+
+# If requested, register a scheduled task to run this script daily and exit
+if ($RegisterScheduledTask) {
+  Register-UpdateScheduledTask -TaskName "WSL-Update" -RunTime $ScheduleTime
+  exit 0
 }
 
 if ($Distro) {

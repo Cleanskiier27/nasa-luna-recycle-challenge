@@ -8,11 +8,18 @@ Files:
 
 Usage (PowerShell host):
 - Elevate PowerShell (Run as Administrator)
-- Update all distros: `.	ools\update-wsl.ps1` (or `.	ools\update-wsl.ps1 -DryRun` to see commands)
-- Update a single distro: `.	ools\update-wsl.ps1 -Distro ubuntu`
+- Update all distros: `.\scripts\update-wsl.ps1` (or `.\scripts\update-wsl.ps1 -DryRun` to see commands)
+- Update a single distro: `.\scripts\update-wsl.ps1 -Distro ubuntu`
+- Run the script from a specific folder (e.g., `G:\kodak`):
+  - `& 'G:\kodak\networkbuster.net\scripts\update-wsl.ps1' -WorkingDir 'G:\kodak'`
 
 Usage (inside WSL):
 - `chmod +x scripts/update-wsl.sh && ./scripts/update-wsl.sh`
+
+Scheduling:
+- Register a daily scheduled task that runs the script (requires elevated PowerShell):
+  - `.\scripts\update-wsl.ps1 -WorkingDir 'G:\kodak' -RegisterScheduledTask -ScheduleTime '03:00'`
+  - This creates/updates a scheduled task named `WSL-Update` to run daily at the specified time.
 
 Safety notes:
 - These scripts use `sudo` inside WSL; you'll be prompted for the distro user's password if required.
