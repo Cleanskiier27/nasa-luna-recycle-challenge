@@ -21,9 +21,14 @@ param(
   [string]$Distro,
   [switch]$DryRun,
   [string]$WorkingDir,
+  [switch]$UseRoot,
   [switch]$RegisterScheduledTask,
-  [string]$ScheduleTime = '03:00'  # HH:mm (24h) local time
-)
+  [string]$ScheduleTime = '03:00',  # HH:mm (24h) local time
+  [string]$LogDir
+) # $LogDir: optional path to write logs (e.g., 'G:\cadil\logs')
+
+# Note: when running with -UseRoot the WSL commands will be executed as the root user
+# (wsl -d <distro> -u root -- <cmd>) so sudo prompts inside the distro are skipped.
 
 # If a working directory is provided, switch to it (useful when running from a mounted drive like G:\kodak)
 if ($WorkingDir) {
@@ -35,10 +40,27 @@ if ($WorkingDir) {
   Set-Location -Path $WorkingDir
 }
 
+# Setup logging to the provided LogDir (if any)
+if ($LogDir) {
+  try {
+    if (-not (Test-Path -Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force | Out-Null }
+    $timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+    $script:LogFile = Join-Path $LogDir "wsl-update-$timestamp.log"
+    Write-Host "Logging to: $script:LogFile" -ForegroundColor Cyan
+    if (-not $DryRun) { Start-Transcript -Path $script:LogFile -Force }
+  } catch {
+    Write-Warning "Could not create or write to LogDir '$LogDir': $_"
+  }
+} else {
+  $script:LogFile = $null
+} 
+
 function Register-UpdateScheduledTask {
   param(
     [string]$TaskName = "WSL-Update",
-    [string]$RunTime = '03:00'
+    [string]$RunTime = '03:00',
+    [switch]$UseRoot,
+    [string]$LogDir
   )
 
   if (-not (Get-Command Register-ScheduledTask -ErrorAction SilentlyContinue)) {
@@ -54,7 +76,16 @@ function Register-UpdateScheduledTask {
 
   $timeParts = $RunTime -split ':'
   $trigger = New-ScheduledTaskTrigger -Daily -At (Get-Date -Hour [int]$timeParts[0] -Minute [int]$timeParts[1] -Second 0)
-  $action = New-ScheduledTaskAction -Execute 'PowerShell.exe' -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`""
+
+  # Include -UseRoot flag if requested
+  $useArg = ''
+  if ($UseRoot) { $useArg = ' -UseRoot' }
+
+  # Include -LogDir if provided
+  $logArg = ''
+  if ($LogDir) { $logArg = " -LogDir `"$LogDir`"" }
+
+  $action = New-ScheduledTaskAction -Execute 'PowerShell.exe' -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$scriptPath`"$useArg$logArg"
 
   # Register or update
   if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
@@ -62,20 +93,28 @@ function Register-UpdateScheduledTask {
   }
 
   Register-ScheduledTask -TaskName $TaskName -Trigger $trigger -Action $action -RunLevel Highest -Force
-  Write-Host "Scheduled task '$TaskName' created to run daily at $RunTime (script: $scriptPath)" -ForegroundColor Green
-}
+  Write-Host "Scheduled task '$TaskName' created to run daily at $RunTime (script: $scriptPath)$($UseRoot ? ' (runs updates as root)' : '')$($LogDir ? "; logs -> $LogDir" : '')" -ForegroundColor Green
+} 
 
 function Run-UpdateInDistro {
   param($name)
   Write-Host "==> Updating distro: $name" -ForegroundColor Cyan
+
+  $execUser = ''
+  if ($UseRoot) { $execUser = '-u root' }
+
   if ($DryRun) {
-    Write-Host "Dry-run: wsl -d $name -- bash -lc 'sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y'"
+    Write-Host "Dry-run: wsl -d $name $execUser -- bash -lc 'sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y'"
     return
   }
 
   $cmd = "sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y"
   try {
-    wsl -d $name -- bash -lc "$cmd"
+    if ($UseRoot) {
+      wsl -d $name -u root -- bash -lc "$cmd"
+    } else {
+      wsl -d $name -- bash -lc "$cmd"
+    }
     Write-Host "Finished update for $name" -ForegroundColor Green
   } catch {
     Write-Host "Update failed for $name: $_" -ForegroundColor Red
@@ -90,9 +129,9 @@ if (-not (Get-Command wsl -ErrorAction SilentlyContinue)) {
 
 # If requested, register a scheduled task to run this script daily and exit
 if ($RegisterScheduledTask) {
-  Register-UpdateScheduledTask -TaskName "WSL-Update" -RunTime $ScheduleTime
+  Register-UpdateScheduledTask -TaskName "WSL-Update" -RunTime $ScheduleTime -UseRoot:$UseRoot -LogDir $LogDir
   exit 0
-}
+} 
 
 if ($Distro) {
   # Update single distro
@@ -113,3 +152,9 @@ foreach ($d in $distroList) {
 }
 
 Write-Host "All WSL updates attempted." -ForegroundColor Green
+
+# Stop logging transcript if it was started
+if ($script:LogFile -and -not $DryRun) {
+  try { Stop-Transcript -ErrorAction SilentlyContinue } catch { }
+  Write-Host "Transcript saved to: $script:LogFile" -ForegroundColor Cyan
+}

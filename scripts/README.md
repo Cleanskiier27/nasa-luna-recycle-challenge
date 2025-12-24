@@ -12,6 +12,14 @@ Usage (PowerShell host):
 - Update a single distro: `.\scripts\update-wsl.ps1 -Distro ubuntu`
 - Run the script from a specific folder (e.g., `G:\kodak`):
   - `& 'G:\kodak\networkbuster.net\scripts\update-wsl.ps1' -WorkingDir 'G:\kodak'`
+- Run updates as root (non-interactive sudo) with `-UseRoot`:
+  - `& 'G:\kodak\networkbuster.net\scripts\update-wsl.ps1' -WorkingDir 'G:\kodak' -UseRoot`
+- Register scheduled task that runs updates as root daily and write logs to G:\cadil\logs:
+  - `& 'G:\kodak\networkbuster.net\scripts\update-wsl.ps1' -WorkingDir 'G:\kodak' -RegisterScheduledTask -UseRoot -LogDir 'G:\kodak\logs' -ScheduleTime '03:00'`
+- One-off run writing log to a specific folder:
+  - `& 'G:\kodak\networkbuster.net\scripts\update-wsl.ps1' -WorkingDir 'G:\kodak' -UseRoot -LogDir 'G:\kodak\logs'`
+
+Security note: `-UseRoot` executes the update command as the root user inside WSL (`wsl -d <distro> -u root`). This suppresses sudo prompts but grants the script elevated privileges inside the distro; use with caution.
 
 Usage (inside WSL):
 - `chmod +x scripts/update-wsl.sh && ./scripts/update-wsl.sh`
