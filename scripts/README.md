@@ -19,6 +19,13 @@ Usage (PowerShell host):
 - One-off run writing log to a specific folder:
   - `& 'G:\kodak\networkbuster.net\scripts\update-wsl.ps1' -WorkingDir 'G:\kodak' -UseRoot -LogDir 'G:\kodak\logs'`
 
+Copying artifacts to a drive
+- `scripts/copy-to-drive.ps1` – safely copy LFS artifacts or repo working tree to a destination drive (e.g., `E:` or `G:`):
+  - Copy default LFS output to `E:`: `.\	ests\scripts\copy-to-drive.ps1 -DestDrive 'E:'` (run from repo root in PowerShell)
+  - Copy entire repo working tree (no `.git`): `.\scripts\copy-to-drive.ps1 -DestDrive 'E:' -IncludeRepo`
+  - Write logs to a folder: `.\scripts\copy-to-drive.ps1 -DestDrive 'E:' -LogDir 'E:\logs'`
+  - Create a zip after copying: add `-Zip`.
+
 Security note: `-UseRoot` executes the update command as the root user inside WSL (`wsl -d <distro> -u root`). This suppresses sudo prompts but grants the script elevated privileges inside the distro; use with caution.
 
 Usage (inside WSL):
