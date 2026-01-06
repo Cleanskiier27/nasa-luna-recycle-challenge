@@ -93,6 +93,33 @@ jobs:
                 body,
               });
             }
+
+      - name: Create Docker build check run
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const sha = process.env.GITHUB_SHA || github.context.sha;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const dashboardTag = `ghcr.io/${owner}/dashboard:${sha}`;
+            const overlayTag = `ghcr.io/${owner}/real-time-overlay:${sha}`;
+            const summary = `Images built and smoke-tested for commit ${sha}`;
+            const text = `**Built Docker images for commit ${sha}**\n\n- Dashboard: ${dashboardTag}\n- Real-time-overlay: ${overlayTag}\n\nTo preview locally, run:\n\n	docker pull ${dashboardTag} && docker run --rm -d -p 5174:80 ${dashboardTag}\n\tdocker pull ${overlayTag} && docker run --rm -d -p 5175:3000 ${overlayTag}\n\nNote: runner-local endpoints (http://localhost:5174 and http://localhost:5175) are only accessible from the runner environment.`;
+            await github.rest.checks.create({
+              owner,
+              repo,
+              name: 'Docker images',
+              head_sha: sha,
+              status: 'completed',
+              conclusion: 'success',
+              output: {
+                title: 'Docker images built',
+                summary: summary,
+                text: text
+              }
+            });
+
       # Optional: push images if PUSH_IMAGES is set to true and appropriate registry credentials are provided
       - name: Login to GitHub Container Registry (GHCR)
         if: ${{ env.PUSH_IMAGES == 'true' }}

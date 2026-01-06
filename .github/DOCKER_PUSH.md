@@ -33,6 +33,11 @@ PR comment with built image tags
 
 - When a PR triggers the workflow, the workflow will post a comment to the PR listing the built image tags (e.g., `ghcr.io/<owner>/dashboard:<sha>`). This helps reviewers pull or test the images built for the PR without digging through workflow logs.
 
+Status check (Check Run)
+
+- The workflow also creates a Check Run named **Docker images** that summarizes the build and includes the image tags. This appears in the Checks area and gives an at-a-glance verification that images were built and smoke-tested.
+
+
 Notes
 
 - By default the workflow builds images and runs smoke tests; it does not push images unless `PUSH_IMAGES` is set.
