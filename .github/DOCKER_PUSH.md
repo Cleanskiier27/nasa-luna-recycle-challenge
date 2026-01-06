@@ -19,6 +19,10 @@ How to enable pushing
 2. Add `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` if you want Docker Hub support.
 3. Set the environment variable `PUSH_IMAGES` to `true` for the workflow run (you can set it in repository secrets or pass it as an input when dispatching the workflow).
 
+Manual run via Actions UI
+
+- You can trigger the workflow manually via **Actions → Build Vite Docker images → Run workflow** and set the **push_images** input to `true` in the UI to push images for that run. This is an alternative to setting repository-level environment variables for one-off runs.
+
 Notes
 
 - By default the workflow builds images and runs smoke tests; it does not push images unless `PUSH_IMAGES` is set.

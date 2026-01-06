@@ -3,10 +3,17 @@ name: Build Vite Docker images
 on:
   pull_request:
   workflow_dispatch:
+    inputs:
+      push_images:
+        description: 'Set to true to push built images to registries'
+        required: false
+        default: 'false'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PUSH_IMAGES: ${{ github.event.inputs.push_images || 'false' }}
     steps:
       - uses: actions/checkout@v4
 
