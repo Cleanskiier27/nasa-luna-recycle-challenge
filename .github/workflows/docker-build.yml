@@ -71,6 +71,28 @@ jobs:
           docker logs overlay_test || true
           docker stop overlay_test || true
 
+      - name: Comment PR with built image tags
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = github.context.payload.pull_request;
+            if (!pr) {
+              core.info('No pull request context available; skipping comment.');
+            } else {
+              const owner = context.repo.owner;
+              const repo = context.repo.repo;
+              const sha = process.env.GITHUB_SHA || github.context.sha;
+              const dashboardTag = `ghcr.io/${owner}/dashboard:${sha}`;
+              const overlayTag = `ghcr.io/${owner}/real-time-overlay:${sha}`;
+              const body = `**Built Docker images for this PR**\n- Dashboard: ${dashboardTag}\n- Real-time-overlay: ${overlayTag}\n\nYou can trigger a manual workflow run with the **push_images** input to push these images to registries.`;
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: pr.number,
+                body,
+              });
+            }
       # Optional: push images if PUSH_IMAGES is set to true and appropriate registry credentials are provided
       - name: Login to GitHub Container Registry (GHCR)
         if: ${{ env.PUSH_IMAGES == 'true' }}

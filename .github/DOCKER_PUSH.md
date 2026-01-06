@@ -23,6 +23,16 @@ Manual run via Actions UI
 
 - You can trigger the workflow manually via **Actions → Build Vite Docker images → Run workflow** and set the **push_images** input to `true` in the UI to push images for that run. This is an alternative to setting repository-level environment variables for one-off runs.
 
+Example CLI run (gh):
+
+- You can also trigger a manual run from the command line using the GitHub CLI:
+
+  gh workflow run "Build Vite Docker images" --repo <owner>/<repo> --field push_images=true
+
+PR comment with built image tags
+
+- When a PR triggers the workflow, the workflow will post a comment to the PR listing the built image tags (e.g., `ghcr.io/<owner>/dashboard:<sha>`). This helps reviewers pull or test the images built for the PR without digging through workflow logs.
+
 Notes
 
 - By default the workflow builds images and runs smoke tests; it does not push images unless `PUSH_IMAGES` is set.
