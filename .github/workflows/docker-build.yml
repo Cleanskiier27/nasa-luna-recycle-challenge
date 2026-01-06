@@ -65,7 +65,42 @@ jobs:
           docker stop overlay_test || true
 
       # Optional: push images if PUSH_IMAGES is set to true and appropriate registry credentials are provided
-      - name: Conditionally push images to GHCR
+      - name: Login to GitHub Container Registry (GHCR)
         if: ${{ env.PUSH_IMAGES == 'true' }}
-        run: |
-          echo "PUSH_IMAGES is set; login + push images must be configured in the workflow or with repository secrets."
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Login to Docker Hub (optional)
+        if: ${{ env.PUSH_IMAGES == 'true' && secrets.DOCKERHUB_USERNAME && secrets.DOCKERHUB_TOKEN }}
+        uses: docker/login-action@v2
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push dashboard image to registries
+        if: ${{ env.PUSH_IMAGES == 'true' }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ./dashboard
+          file: ./dashboard/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/dashboard:latest
+            ghcr.io/${{ github.repository_owner }}/dashboard:${{ github.sha }}
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/dashboard:latest
+
+      - name: Push real-time-overlay image to registries
+        if: ${{ env.PUSH_IMAGES == 'true' }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ./challengerepo/real-time-overlay
+          file: ./challengerepo/real-time-overlay/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/real-time-overlay:latest
+            ghcr.io/${{ github.repository_owner }}/real-time-overlay:${{ github.sha }}
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/real-time-overlay:latest
