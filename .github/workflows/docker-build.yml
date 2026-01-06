@@ -1,0 +1,39 @@
+name: Build Vite Docker images
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build dashboard image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./dashboard
+          file: ./dashboard/Dockerfile
+          push: false
+          tags: ghcr.io/${{ github.repository_owner }}/dashboard:${{ github.sha }}
+
+      - name: Build real-time-overlay image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./challengerepo/real-time-overlay
+          file: ./challengerepo/real-time-overlay/Dockerfile
+          push: false
+          tags: ghcr.io/${{ github.repository_owner }}/real-time-overlay:${{ github.sha }}
+
+      # Optional: push images if PUSH_IMAGES is set to true and appropriate registry credentials are provided
+      - name: Conditionally push images to GHCR
+        if: ${{ env.PUSH_IMAGES == 'true' }}
+        run: |
+          echo "PUSH_IMAGES is set; login + push images must be configured in the workflow or with repository secrets."
