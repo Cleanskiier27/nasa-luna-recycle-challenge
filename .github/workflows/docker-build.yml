@@ -1,0 +1,106 @@
+name: Build Vite Docker images
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build dashboard image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./dashboard
+          file: ./dashboard/Dockerfile
+          push: false
+          load: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/dashboard:${{ github.sha }}
+            dashboard:pr-${{ github.run_id }}
+
+      - name: Build real-time-overlay image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./challengerepo/real-time-overlay
+          file: ./challengerepo/real-time-overlay/Dockerfile
+          push: false
+          load: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/real-time-overlay:${{ github.sha }}
+            real-time-overlay:pr-${{ github.run_id }}
+
+      - name: Smoke-test dashboard container
+        run: |
+          set -euo pipefail
+          docker run --rm -d --name dashboard_test -p 5174:80 dashboard:pr-${{ github.run_id }}
+          # wait for the service to come up
+          for i in {1..10}; do
+            if curl --silent --fail http://localhost:5174; then echo "dashboard OK"; break; fi
+            sleep 2
+            echo "retry $i..."
+          done
+          # show logs for debugging
+          docker logs dashboard_test || true
+          docker stop dashboard_test || true
+
+      - name: Smoke-test real-time-overlay container
+        run: |
+          set -euo pipefail
+          docker run --rm -d --name overlay_test -p 5175:3000 real-time-overlay:pr-${{ github.run_id }}
+          for i in {1..10}; do
+            if curl --silent --fail http://localhost:5175; then echo "overlay OK"; break; fi
+            sleep 2
+            echo "retry $i..."
+          done
+          docker logs overlay_test || true
+          docker stop overlay_test || true
+
+      # Optional: push images if PUSH_IMAGES is set to true and appropriate registry credentials are provided
+      - name: Login to GitHub Container Registry (GHCR)
+        if: ${{ env.PUSH_IMAGES == 'true' }}
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Login to Docker Hub (optional)
+        if: ${{ env.PUSH_IMAGES == 'true' && secrets.DOCKERHUB_USERNAME && secrets.DOCKERHUB_TOKEN }}
+        uses: docker/login-action@v2
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push dashboard image to registries
+        if: ${{ env.PUSH_IMAGES == 'true' }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ./dashboard
+          file: ./dashboard/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/dashboard:latest
+            ghcr.io/${{ github.repository_owner }}/dashboard:${{ github.sha }}
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/dashboard:latest
+
+      - name: Push real-time-overlay image to registries
+        if: ${{ env.PUSH_IMAGES == 'true' }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ./challengerepo/real-time-overlay
+          file: ./challengerepo/real-time-overlay/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/real-time-overlay:latest
+            ghcr.io/${{ github.repository_owner }}/real-time-overlay:${{ github.sha }}
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/real-time-overlay:latest
