@@ -22,7 +22,10 @@ jobs:
           context: ./dashboard
           file: ./dashboard/Dockerfile
           push: false
-          tags: ghcr.io/${{ github.repository_owner }}/dashboard:${{ github.sha }}
+          load: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/dashboard:${{ github.sha }}
+            dashboard:pr-${{ github.run_id }}
 
       - name: Build real-time-overlay image
         uses: docker/build-push-action@v5
@@ -30,7 +33,36 @@ jobs:
           context: ./challengerepo/real-time-overlay
           file: ./challengerepo/real-time-overlay/Dockerfile
           push: false
-          tags: ghcr.io/${{ github.repository_owner }}/real-time-overlay:${{ github.sha }}
+          load: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/real-time-overlay:${{ github.sha }}
+            real-time-overlay:pr-${{ github.run_id }}
+
+      - name: Smoke-test dashboard container
+        run: |
+          set -euo pipefail
+          docker run --rm -d --name dashboard_test -p 5174:80 dashboard:pr-${{ github.run_id }}
+          # wait for the service to come up
+          for i in {1..10}; do
+            if curl --silent --fail http://localhost:5174; then echo "dashboard OK"; break; fi
+            sleep 2
+            echo "retry $i..."
+          done
+          # show logs for debugging
+          docker logs dashboard_test || true
+          docker stop dashboard_test || true
+
+      - name: Smoke-test real-time-overlay container
+        run: |
+          set -euo pipefail
+          docker run --rm -d --name overlay_test -p 5175:3000 real-time-overlay:pr-${{ github.run_id }}
+          for i in {1..10}; do
+            if curl --silent --fail http://localhost:5175; then echo "overlay OK"; break; fi
+            sleep 2
+            echo "retry $i..."
+          done
+          docker logs overlay_test || true
+          docker stop overlay_test || true
 
       # Optional: push images if PUSH_IMAGES is set to true and appropriate registry credentials are provided
       - name: Conditionally push images to GHCR
