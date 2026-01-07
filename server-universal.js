@@ -340,6 +340,220 @@ app.get('/audio-lab', (req, res) => {
   res.redirect('http://localhost:3002/audio-lab');
 });
 
+// ============================================
+// ROCKETMAN STREAMING API ENDPOINTS
+// ============================================
+
+// Network detection for IP and connection type
+app.get('/api/network/detect-ip', (req, res) => {
+  const interfaces = os.networkInterfaces();
+  let serverIP = 'localhost';
+
+  // Find the primary network interface
+  for (const [name, nets] of Object.entries(interfaces)) {
+    for (const net of nets) {
+      if (net.family === 'IPv4' && !net.internal && name !== 'lo') {
+        serverIP = net.address;
+        break;
+      }
+    }
+    if (serverIP !== 'localhost') break;
+  }
+
+  res.json({
+    serverIP,
+    hostname: os.hostname(),
+    platform: os.platform(),
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Rocketman streaming control
+app.post('/api/streaming/rocketman/start', (req, res) => {
+  const { serverIP, connectionType, neuralNetworkVersion } = req.body;
+
+  // Simulate streaming session creation
+  const sessionId = `rocketman-${Date.now()}`;
+  const streamUrl = `rtmp://${serverIP}:1935/live/${sessionId}`;
+
+  res.json({
+    sessionId,
+    streamUrl,
+    neuralNetworkVersion: neuralNetworkVersion || '2.1.0',
+    connectionType,
+    status: 'started',
+    timestamp: new Date().toISOString()
+  });
+
+  addLog('Rocketman streaming started', sessionId);
+});
+
+app.post('/api/streaming/rocketman/stop', (req, res) => {
+  res.json({
+    status: 'stopped',
+    message: 'Rocketman streaming session ended',
+    timestamp: new Date().toISOString()
+  });
+
+  addLog('Rocketman streaming stopped');
+});
+
+// Update server for playback
+app.post('/api/streaming/update-server', (req, res) => {
+  const { serverIP, connectionType, format } = req.body;
+
+  res.json({
+    serverIP,
+    connectionType,
+    format: format || 'full-hd',
+    updated: true,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Azure container streaming
+app.post('/api/azure/container/stream', (req, res) => {
+  const { frame, timestamp, neuralVersion, connectionType } = req.body;
+
+  // Simulate Azure container processing
+  res.json({
+    processed: true,
+    frameId: `frame-${Date.now()}`,
+    neuralVersion,
+    connectionType,
+    azureStatus: 'streamed',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// ============================================
+// SATELLITE GPU NEURAL NETWORK API ENDPOINTS
+// ============================================
+
+// Get satellite data
+app.get('/api/satellite/data', (req, res) => {
+  const satellites = [
+    {
+      id: 'sat-001',
+      name: 'Luna-Observer-1',
+      position: { lat: 28.5, lng: -80.6 },
+      altitude: 35786,
+      status: 'active',
+      gpu: 'NVIDIA A100',
+      neuralVersion: '2.1.0',
+      coverage: 'North America'
+    },
+    {
+      id: 'sat-002',
+      name: 'Luna-Observer-2',
+      position: { lat: 51.5, lng: 0.1 },
+      altitude: 35786,
+      status: 'active',
+      gpu: 'NVIDIA H100',
+      neuralVersion: '2.1.0',
+      coverage: 'Europe'
+    },
+    {
+      id: 'sat-003',
+      name: 'Luna-Observer-3',
+      position: { lat: 35.7, lng: 139.7 },
+      altitude: 35786,
+      status: 'maintenance',
+      gpu: 'AMD MI250',
+      neuralVersion: '2.0.5',
+      coverage: 'Asia-Pacific'
+    },
+    {
+      id: 'sat-004',
+      name: 'Luna-Observer-4',
+      position: { lat: -33.9, lng: 151.2 },
+      altitude: 35786,
+      status: 'active',
+      gpu: 'NVIDIA A100',
+      neuralVersion: '2.1.0',
+      coverage: 'Oceania'
+    }
+  ];
+
+  res.json({ satellites, timestamp: new Date().toISOString() });
+});
+
+// Get GPU cluster status
+app.get('/api/gpu/status', (req, res) => {
+  res.json({
+    totalGPUs: 16,
+    activeGPUs: 14,
+    utilization: 87,
+    memoryUsage: 92,
+    temperature: 68,
+    neuralNetworks: {
+      objectDetection: 'v2.1.0',
+      imageProcessing: 'v2.0.8',
+      predictiveAnalytics: 'v2.1.2',
+      anomalyDetection: 'v1.9.5'
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Neural network upgrade
+app.post('/api/neural/upgrade', (req, res) => {
+  const { targetVersion } = req.body;
+
+  // Simulate neural network upgrade
+  setTimeout(() => {
+    res.json({
+      upgraded: true,
+      newVersion: targetVersion || '2.2.0',
+      previousVersion: '2.1.0',
+      upgradeTime: '2.3 seconds',
+      improvements: [
+        'Enhanced object detection accuracy: +15%',
+        'Improved image processing speed: +25%',
+        'New predictive analytics model',
+        'Advanced anomaly detection'
+      ],
+      timestamp: new Date().toISOString()
+    });
+  }, 2300);
+});
+
+// Satellite neural upgrade
+app.post('/api/satellite/neural-upgrade', (req, res) => {
+  const { targetVersion } = req.body;
+
+  res.json({
+    upgraded: true,
+    satellitesUpdated: 4,
+    newVersion: targetVersion || '2.2.0',
+    updatedNetworks: {
+      objectDetection: targetVersion || '2.2.0',
+      imageProcessing: 'v2.1.0',
+      predictiveAnalytics: 'v2.1.5',
+      anomalyDetection: 'v2.0.0'
+    },
+    timestamp: new Date().toISOString()
+  });
+
+  addLog('Satellite neural network upgraded', targetVersion || '2.2.0');
+});
+
+// Satellite restore
+app.post('/api/satellite/restore', (req, res) => {
+  const { satelliteId } = req.body;
+
+  res.json({
+    restored: true,
+    satelliteId,
+    status: 'active',
+    restoreTime: '45 seconds',
+    diagnostics: 'All systems nominal',
+    timestamp: new Date().toISOString()
+  });
+
+  addLog('Satellite restored', satelliteId);
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found', path: req.path });

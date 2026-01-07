@@ -1,0 +1,41 @@
+# AI Defense Container for NetworkBuster
+FROM python:3.11-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements-ai.txt .
+RUN pip install --no-cache-dir -r requirements-ai.txt
+
+# Copy AI applications
+COPY ai-defense/ ./ai-defense/
+COPY ai-training-pipeline.py .
+
+# Create AI models directory
+RUN mkdir -p /app/models /app/logs /app/data
+
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV AI_DEFENSE_MODE=active
+ENV DEFENSE_LEVEL=maximum
+ENV MONITORING_INTERVAL=30
+ENV ANOMALY_THRESHOLD=0.85
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Expose ports
+EXPOSE 8000 8001 8002
+
+# Start AI defense systems
+CMD ["python", "-m", "ai-defense.main"]
