@@ -1,0 +1,10 @@
+{
+  "example-app": {
+    "base_url": "http://localhost:3000",
+    "description": "Example application proxy"
+  },
+  "maven-app": {
+    "base_url": "https://repo1.maven.org/maven2",
+    "description": "Direct Maven Central access"
+  }
+}

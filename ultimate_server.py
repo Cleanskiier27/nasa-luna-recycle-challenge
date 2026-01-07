@@ -32,7 +32,7 @@ from pathlib import Path
 from flask import Flask, request, Response, jsonify, send_file
 import requests
 from git import Repo, GitCommandError
-from google.cloud import build_v1
+from google.cloud.devtools import cloudbuild_v1
 from google.oauth2 import service_account
 
 # Configure logging
@@ -69,7 +69,7 @@ apps_config = load_apps_config()
 build_client = None
 if GOOGLE_CLOUD_PROJECT and os.path.exists('service_account.json'):
     credentials = service_account.Credentials.from_service_account_file('service_account.json')
-    build_client = build_v1.CloudBuildClient(credentials=credentials)
+    build_client = cloudbuild_v1.CloudBuildClient(credentials=credentials)
 
 @app.route('/maven/<path:path>', methods=['GET'])
 def maven_proxy(path):
@@ -192,9 +192,9 @@ def trigger_ci_build():
 
     try:
         # Create build request
-        build = build_v1.Build()
-        build.source = build_v1.Source()
-        build.source.storage_source = build_v1.StorageSource(
+        build = cloudbuild_v1.Build()
+        build.source = cloudbuild_v1.Source()
+        build.source.storage_source = cloudbuild_v1.StorageSource(
             bucket='your-source-bucket',  # Configure this
             object_='source.zip'  # Configure this
         )
@@ -214,6 +214,7 @@ def trigger_ci_build():
 @app.route('/config', methods=['GET', 'POST'])
 def manage_config():
     """Manage server configuration."""
+    global apps_config
     if request.method == 'GET':
         return jsonify({
             'maven_cache_dir': str(CACHE_DIR),
@@ -224,7 +225,6 @@ def manage_config():
         })
 
     elif request.method == 'POST':
-        global apps_config
         data = request.get_json()
         if 'apps' in data:
             apps_config.update(data['apps'])
