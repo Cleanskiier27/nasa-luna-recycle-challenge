@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "collected_package"
+version = "0.1.0"
+description = "Auto-generated package created by tools/py_compiler.py"
+readme = "README.md"
+license = { text = "MIT" }
+
+[project.optional-dependencies]
+testing = ["pytest"]

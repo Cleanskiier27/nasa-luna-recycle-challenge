@@ -1,0 +1,13 @@
+# Standard Python ignores
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+
+# Compiled output folder
+compiled_py/
+
+# Azure pipeline disable marker
+.azure-pipelines.disabled
