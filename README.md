@@ -43,6 +43,13 @@ Flags
 - `--bypass-azure` rename `azure-pipelines.yml` to `.azure-pipelines.disabled`
 - `--restore-azure` restore it back
 
+CLI entry points
+
+- `networkbuster-compile` — runs the `py_compiler` main to collect and scaffold Python files
+- `networkbuster-build` — runs the `build_release` helper to run compiler, tests, and build artifacts
+
+These are available after installing the package (or when adding the repo to your PYTHONPATH).
+
 Notes
 
 - If `pathspec` is not installed, the script uses a simple fallback for some `.gitignore` rules.

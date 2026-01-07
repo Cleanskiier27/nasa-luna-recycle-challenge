@@ -11,3 +11,7 @@ license = { text = "MIT" }
 
 [project.optional-dependencies]
 testing = ["pytest"]
+
+[project.scripts]
+networkbuster-compile = "lock_bypass.cli:compile_main"
+networkbuster-build = "lock_bypass.cli:build_main"
