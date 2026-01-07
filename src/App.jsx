@@ -4,6 +4,8 @@ import TeamMembers from './TeamMembers'
 import Overlay from './Overlay'
 import Dashboard from './Dashboard'
 import Secrets from './Secrets'
+import RocketmanStreaming from './RocketmanStreaming'
+import SatGPUMaps from './SatGPUMaps'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -79,7 +81,11 @@ function App() {
           <li><a href="/dashboard" onClick={(e) => handleNavigation(e, 'dashboard')}>Dashboard</a></li>
           <li><a href="/secrets" onClick={(e) => handleNavigation(e, 'secrets')}>Secrets</a></li>
           <li><a href="/team" onClick={(e) => handleNavigation(e, 'team')}>Team</a></li>
+          <li><a href="/rocketman" onClick={(e) => handleNavigation(e, 'rocketman')}>🚀 Rocketman</a></li>
+          <li><a href="/satellite" onClick={(e) => handleNavigation(e, 'satellite')}>🛰️ Satellite</a></li>
           <li><a href="http://localhost:3001/home" target="_blank">Backend Home</a></li>
+          <li><a href="http://localhost:3002" target="_blank">Audio Server</a></li>
+          <li><a href="http://localhost:3004" target="_blank">Flash Service</a></li>
         </ul>
       </nav>
 
@@ -88,6 +94,8 @@ function App() {
         {currentPage === 'dashboard' && <Dashboard />}
         {currentPage === 'secrets' && <Secrets />}
         {currentPage === 'team' && <TeamMembers />}
+        {currentPage === 'rocketman' && <RocketmanStreaming />}
+        {currentPage === 'satellite' && <SatGPUMaps />}
       </main>
 
       <footer className="app-footer">
