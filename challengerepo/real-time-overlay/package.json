@@ -10,30 +10,30 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@react-three/drei": "^9.108.0",
-        "@react-three/fiber": "^8.16.8",
-        "framer-motion": "^11.2.10",
+        "@react-three/drei": "^10.7.7",
+        "@react-three/fiber": "^9.5.0",
+        "framer-motion": "^12.24.3",
         "leaflet": "^1.9.4",
-        "lucide-react": "^0.395.0",
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1",
-        "react-leaflet": "^4.2.1",
-        "recharts": "^2.12.7",
+        "lucide-react": "^0.562.0",
+        "react": "^19.2.3",
+        "react-dom": "^19.2.3",
+        "react-leaflet": "^5.0.0",
+        "recharts": "^3.6.0",
         "simplex-noise": "^4.0.3",
-        "three": "^0.165.0",
-        "tailwindcss": "^3.4.1",
-        "autoprefixer": "^10.4.17",
-        "postcss": "^8.4.32"
+        "three": "^0.182.0",
+        "tailwindcss": "^4.1.18",
+        "autoprefixer": "^10.4.23",
+        "postcss": "^8.5.6"
     },
     "devDependencies": {
-        "@types/react": "^18.3.3",
-        "@types/react-dom": "^18.3.0",
-        "@vitejs/plugin-react": "^4.3.1",
-        "eslint": "^8.57.0",
-        "eslint-plugin-react": "^7.34.2",
-        "eslint-plugin-react-hooks": "^4.6.2",
-        "eslint-plugin-react-refresh": "^0.4.7",
+        "@types/react": "^19.2.7",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^5.1.2",
+        "eslint": "^9.39.2",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-react-refresh": "^0.4.26",
         "terser": "^5.44.1",
-        "vite": "^5.3.1"
+        "vite": "^7.3.0"
     }
 }
