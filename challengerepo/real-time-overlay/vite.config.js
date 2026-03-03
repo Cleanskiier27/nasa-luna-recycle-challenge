@@ -24,7 +24,5 @@ export default defineConfig({
             }
         }
     },
-    define: {
-        'process.env': process.env
-    }
+    // Avoid exposing the entire process.env to client bundles
 })

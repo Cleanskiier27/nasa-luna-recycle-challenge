@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm run build:all || npm run build || true",
+  "buildCommand": "apt-get update && apt-get install -y python3 python3-pip && python3 ai-training-pipeline.py && npm run build:all || npm run build || true",
   "devCommand": "npm start",
   "installCommand": "npm ci --legacy-peer-deps || npm install",
   "env": {

@@ -1,23 +1,91 @@
-MIT License
+# NASA Space Act Agreement License
 
-Copyright (c) 2025 NetworkBuster Research Division
+## Repository: https://github.com/Cleanskiier27/nasa-luna-recycle-challenge
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+**NOT FOR REPRODUCTION OR COMMERCIAL USE**
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+This software and documentation is provided under the NASA Space Act Agreement for the NASA Luna Recycle Challenge. This license explicitly prohibits reproduction, redistribution, or commercial use without express written permission from NASA and the challenge organizers.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+## LICENSE TERMS
+
+### 1. GRANT OF LICENSE
+Subject to the terms and conditions of this Agreement, NASA hereby grants to the Recipient a non-exclusive, non-transferable, limited license to use, copy, modify, and compile the software and documentation contained in this repository solely for the purpose of participating in the NASA Luna Recycle Challenge.
+
+### 2. RESTRICTIONS
+- **No Reproduction**: This repository and its contents SHALL NOT be reproduced, duplicated, or copied in whole or in part without express written permission from NASA.
+- **No Redistribution**: Redistribution of this software, documentation, or any derivative works is strictly prohibited.
+- **No Commercial Use**: Commercial use, sale, or exploitation of this software or any derivative works is expressly forbidden.
+- **No Public Distribution**: Public distribution, sharing, or publication of this repository contents is not permitted.
+
+### 3. INTELLECTUAL PROPERTY
+- All intellectual property rights in the software and documentation remain with NASA and the original contributors.
+- Any modifications or improvements made by the Recipient shall be subject to the same restrictions as the original software.
+
+### 4. SPACE SYSTEMS COMPLIANCE
+This software is intended for conceptual demonstration purposes only in the context of the NASA Luna Recycle Challenge. Actual space systems must comply with:
+- NASA Standards for Software Engineering (NASA-STD-8739.8)
+- SpaceX Dragon and Starship certification requirements
+- FAA Commercial Space Transportation regulations
+- International space law and treaties
+
+### 5. SAFETY AND MISSION CRITICAL SYSTEMS
+**WARNING**: This software has not been certified for flight or mission-critical applications. Implementation in actual space systems requires:
+- Independent verification and validation (IV&V)
+- Safety-critical software development standards
+- Radiation hardening for lunar environment
+- Fault tolerance and redundancy requirements
+- NASA Software Assurance and Software Safety standards
+
+### 6. EXPORT CONTROL AND CLASSIFICATION
+- This software may contain technical data subject to U.S. export control laws
+- ITAR (International Traffic in Arms Regulations) may apply
+- EAR (Export Administration Regulations) compliance required
+- Users must obtain necessary export licenses for international distribution
+
+### 7. WARRANTY DISCLAIMER
+THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL NASA, SPACEX, OR THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.
+
+### 8. LIMITATION OF LIABILITY
+NASA, SpaceX, and the authors shall not be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software.
+
+### 9. GOVERNING LAW
+This Agreement shall be governed by and construed in accordance with the laws of the United States of America, without regard to its conflict of laws principles.
+
+### 10. TERMINATION
+This license is effective until terminated. NASA may terminate this license at any time if the Recipient breaches any term or condition of this Agreement.
+
+### 11. CHALLENGE SPECIFIC TERMS
+- This software is developed specifically for the NASA Luna Recycle Challenge
+- Challenge rules and requirements supersede any conflicting terms
+- Submission to NASA constitutes acceptance of challenge terms
+- Intellectual property rights remain with original creators unless otherwise specified in challenge rules
+
+### 12. ATTRIBUTION
+If permitted by challenge rules, proper attribution must be given to:
+- NASA (National Aeronautics and Space Administration)
+- SpaceX
+- Original repository: https://github.com/Cleanskiier27/nasa-luna-recycle-challenge
+
+---
+
+## CONTACT INFORMATION
+
+For questions regarding this license or the NASA Luna Recycle Challenge:
+
+**NASA Official Contact:**
+- NASA Challenge Program
+- Email: challenges@nas.nasa.gov
+- Website: https://www.nasa.gov/solve
+
+**Repository Owner:**
+- Repository: https://github.com/Cleanskiier27/nasa-luna-recycle-challenge
+- Contact: Repository maintainer
+
+---
+
+**FINAL WARNING**: This license explicitly prohibits reproduction, redistribution, or commercial use. Violation may result in disqualification from the NASA Luna Recycle Challenge and potential legal action under applicable U.S. laws and regulations.
+
+*Last Updated: January 7, 2026*
 SOFTWARE.
 
 ---
